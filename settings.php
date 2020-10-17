@@ -23,18 +23,16 @@ $kids = [
 ];
 
 $moments = [
-    "tu1213" => "Tuesday 12:00 - 13:00",
-    "tu1314" => "Tuesday 13:00 - 14:00",
-    "tu1415" => "Tuesday 14:00 - 15:00",
-    "tu1516" => "Tuesday 15:00 - 16:00",
-    "tu1617" => "Tuesday 16:00 - 17:00",
-    "tu1718" => "Tuesday 17:00 - 18:00",
-    "fr1213" => "Friday 12:00 - 13:00 ",
-    "fr1314" => "Friday 13:00 - 14:00 ",
-    "fr1415" => "Friday 14:00 - 15:00 ",
-    "fr1516" => "Friday 15:00 - 16:00 ",
-    "fr1617" => "Friday 16:00 - 17:00 ",
-    "fr1718" => "Friday 17:00 - 18:00 ",
+    "tu1314" => "Dinsdag 27/10 tussen 13:30 - 14:30",
+    "tu1415" => "Dinsdag 27/10 tussen 14:30 - 15:30",
+    "tu1516" => "Dinsdag 27/10 tussen 15:30 - 16:30",
+    "tu1617" => "Dinsdag 27/10 tussen 16:30 - 17:30",
+    "tu1718" => "Dinsdag 27/10 tussen 17:30 - 18:30",
+    "tu1819" => "Dinsdag 27/10 tussen 18:30 - 19:30",
+    "wo1314" => "Woensdag 28/10 tussen 13:30 - 14:30 ",
+    "wo1415" => "Woensdag 28/10 tussen 14:30 - 15:30 ",
+    "wo1516" => "Woensdag 28/10 tussen 15:30 - 16:30 ",
+    "wo1617" => "Woensdag 28/10 tussen 16:30 - 17:30 ",
 ];
 
 $db = new SQLite3('db.sqlite');
