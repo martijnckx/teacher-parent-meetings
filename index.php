@@ -324,7 +324,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
                 <?php } else { ?>
                 <p>Duid hier graag <b>alle momenten</b> aan waarop je aanwezig zou kunnen zijn op het oudercontact.
                 De juf zal op basis van alle antwoorden een planning opstellen,
-                en je per mail laten weten op welk specifiek moment je aan de beurt bent.</p>
+                en je per mail laten weten op welk specifiek moment je aan de beurt bent. Je ontvangt tegelijk de link naar de online omgeving waarin het gesprek plaatsvindt.</p>
 
                 <p style="width: 100%;">Ik ben een ouder of voogd van:</p>
                 <div class="select-dropdown">
