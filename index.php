@@ -59,7 +59,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             color: var(--main-color);
         }
         .thanks {
-            font-size: 24px;
+            font-size: 18px;
             margin: 50px 0;
         }
         html, body {
