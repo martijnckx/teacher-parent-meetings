@@ -320,7 +320,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             <form class="content" action="?" method="post">
                 <h1>Online Oudercontact</h1>
                 <?php if ($justsaved) { ?>
-                <p class="thanks"><b>Bedankt!</b> Je beschikbaarheden zijn opgeslagen. De juf gaat nu een planning maken, en laat zo snel mogelijk per <b>e-mail</b> weten welk moment jij aan de beurt bent.</p>
+                <p class="thanks"><b>Bedankt!</b> Je beschikbaarheden zijn opgeslagen. De juf gaat nu een planning maken, en laat zo snel mogelijk per <b>e-mail</b> weten wanneer jij aan de beurt bent. Je ontvangt tegelijk de link naar de online omgeving waarin het gesprek plaatsvindt.</p>
                 <?php } else { ?>
                 <p>Duid hier graag <b>alle momenten</b> aan waarop je aanwezig zou kunnen zijn op het oudercontact.
                 De juf zal op basis van alle antwoorden een planning opstellen,
