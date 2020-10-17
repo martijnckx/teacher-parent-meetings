@@ -284,7 +284,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
 
         @media screen and (max-width: 699px) {
             .extra-shadow {
-                margin-top: 0;
+                margin: 0;
             }
             .container {
                 justify-content: flex-start;
