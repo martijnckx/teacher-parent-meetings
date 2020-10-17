@@ -78,7 +78,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             align-items: center;
         }
         .extra-shadow {
-            margin-top: 20px;
+            margin: 20px 0;
             border-radius: 15px;
             box-shadow: 0px 3px 40px rgba(0, 0, 0, 0.05);
         }
