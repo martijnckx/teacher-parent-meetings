@@ -46,10 +46,10 @@ function getAvailabilitiesOfKid($kid, $availabilities) {
     .timeslot:nth-child(even) {
         background: #F6F6F6;
     }
-    .timeslot.available {
-        background: #adecad;
+    .timeslot.not-coming {
+        background: #ecadad;
     }
-    .timeslot.available:nth-child(even) {
+    .timeslot.available {
         background: #adecad;
     }
     .fixed {
@@ -57,12 +57,21 @@ function getAvailabilitiesOfKid($kid, $availabilities) {
         z-index: 1;
         margin-left: -150px;
     }
+    .note {
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-size: 11px;
+        overflow-y: scroll;
+    }
     </style>
 </head>
 <body>
     <div class="availabilities">
         <div class="kid fixed">
         <p>&nbsp;</p>
+        <p class="note">&nbsp;</p>
         <?php foreach ($moments as $moment => $readable) { ?>
             <div class="timeslot <?php if (in_array($moment, $entry['Moments'])) { echo 'available'; } ?>">
             <?= $readable ?>
@@ -72,8 +81,9 @@ function getAvailabilitiesOfKid($kid, $availabilities) {
         <?php foreach ($availabilities as $entry) { ?>
         <div class="kid">
             <p><?=$kids[$entry['Kid']]?></p>
+            <p class="note"><?=$entry['Note']?></p>
             <?php foreach ($moments as $moment => $readable) { ?>
-            <div class="timeslot <?php if (in_array($moment, $entry['Moments'])) { echo 'available'; } ?>">
+            <div class="timeslot <?php if (in_array($moment, $entry['Moments'])) { echo 'available'; } else if (!$entry['Coming']) { echo 'not-coming'; } ?>">
             
             </div>
             <?php } ?>

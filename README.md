@@ -17,8 +17,10 @@ A tool designed for my mom, a primary school teacher, to quickly and easily gath
 
 ```SQL
 CREATE TABLE Moments
-(Kid INT PRIMARY KEY NOT NULL,
-Moments TEXT NOT NULL);
+(Kid TEXT PRIMARY KEY NOT NULL,
+Moments TEXT NOT NULL,
+Note TEXT,
+Coming INT DEFAULT 1);
 ```
 
 ## Usage

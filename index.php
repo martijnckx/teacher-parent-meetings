@@ -4,21 +4,28 @@ include_once('settings.php');
 
 function hasAvailabilitiesSaved($kid, $availabilities) {
     foreach ($availabilities as $entry) {
-        if ($entry['Kid'] === intval($kid)) return true;
+        if ($entry['Kid'] === $kid) return true;
     }
     return false;
 }
 
 $justsaved = false;
-if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
-    if (isset($kids[$_POST['kid']]) && isset($moments[$_POST['availabilities'][0]])) {
+// Kid needs to be selected and needs to exist
+if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
+    // Parents are either not coming, or have selected at least one availability
+    if ((!empty($_POST['availabilities']) || (!empty($_POST['not-coming']) && $_POST['not-coming'] === '1'))) {
+        // Kid cannot have availabilties saved already
         if (!hasAvailabilitiesSaved($_POST['kid'], $availabilities)) {
-            $stm = $db->prepare('INSERT INTO Moments VALUES (:n, :a)');
-            $stm->bindValue(':n', $_POST['kid'], SQLITE3_INTEGER);
-            $stm->bindValue(':a', implode(",", $_POST['availabilities']), SQLITE3_TEXT);
+            $stm = $db->prepare('INSERT INTO Moments VALUES (:k, :a, :n, :c)');
+            $stm->bindValue(':k', $_POST['kid'], SQLITE3_TEXT);
+            $stm->bindValue(':a', (empty($_POST['availabilities']) ? "" : implode(",", $_POST['availabilities'])), SQLITE3_TEXT);
+            $stm->bindValue(':n', $_POST['note'] ?? "", SQLITE3_TEXT);
+            $stm->bindValue(':c', ((!empty($_POST['not-coming']) && $_POST['not-coming'] === '1') ? 0 : 1), SQLITE3_INTEGER);
             $res = $stm->execute();
             $justsaved = true;
         }
+    } else {
+        echo 'Kid selected but no input';
     }
 }
 
@@ -154,20 +161,28 @@ if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
             justify-content: space-between;
         }
 
-        .moment-selection input[type="checkbox"] {
+        input[type="checkbox"] {
             position: absolute;
             margin-left: -9999px;
         }
 
-        .moment-selection input[type="checkbox"]:checked + .moment {
+        .moment-selection input[type="checkbox"]:checked + .moment, input[type="checkbox"]:checked + .moment-selection.coming .moment {
             background: var(--light-bg);
             color: var(--main-color);
             font-weight: 600;
         }
 
+        #not-coming:checked ~ .availabilities {
+            display: none;
+        }
+
         .moment-selection .checkbox-container {
             width: 49.5%;
             position: relative;
+        }
+
+        .moment-selection.coming .checkbox-container {
+            width: 100%;
         }
 		
 		.moment-selection .checkbox-container:first-of-type .moment {
@@ -181,6 +196,10 @@ if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
         }
 		.moment-selection .checkbox-container:last-of-type .moment {
 			border-bottom-right-radius: 7px;
+        }
+
+        .moment-selection.coming .checkbox-container .moment {
+            border-radius: 7px;
         }
 
         .moment-selection .moment {
@@ -232,6 +251,30 @@ if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
             --main-color: #ed0404;
         }
 
+        textarea {
+            font-family: "Bitter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            width: 100%;
+            border: 2px solid var(--light-bg);
+            box-sizing: border-box;
+            border-radius: 7px;
+            color: var(--main-color);
+            padding: 10px 20px;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            font-family: "Bitter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: var(--light-text);
+
+        }
+
+        input:focus, textarea:focus, select:focus{
+            outline: none;
+            border: 2px solid var(--main-color);
+        }
+
         @media screen and (max-width: 699px) {
             .container {
                 justify-content: flex-start;
@@ -275,7 +318,7 @@ if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
     <div class="container">
         <div class="extra-shadow">
             <form class="content" action="?" method="post">
-                <h1>Oudercontact</h1>
+                <h1>Online Oudercontact</h1>
                 <?php if ($justsaved) { ?>
                 <p class="thanks"><b>Bedankt!</b> Je beschikbaarheden zijn opgeslagen. De juf gaat nu een planning maken, en laat zo snel mogelijk per <b>e-mail</b> weten welk moment jij aan de beurt bent.</p>
                 <?php } else { ?>
@@ -284,24 +327,41 @@ if (!empty($_POST['kid']) && !empty($_POST['availabilities'])) {
                 en je per mail laten weten op welk specifiek moment je aan de beurt bent.</p>
 
                 <p style="width: 100%;">Ik ben een ouder of voogd van:</p>
-                <div class="select-dropdown"><select required name="kid">
-                    <option value="" selected disabled>Duid aan</option>
-                    <?php foreach ($kids as $number => $name) {
-                    if (!hasAvailabilitiesSaved($number, $availabilities)) {    
-                    ?>
-                    <option value="<?= $number ?>"><?= $name ?></option>
-                    <?php }} ?>
-                </select></div>
-                <p>Ik kan op al deze momenten <b>(duid zoveel mogelijk opties aan)</b>:</p>
-
-                <div class="moment-selection">
-                    <?php foreach ($moments as $code => $readable) { ?>
-                        <div class="checkbox-container">
-                            <input type="checkbox" name="availabilities[]" value="<?= $code ?>" id="<?= $code ?>">
-                            <label for="<?= $code ?>" class="moment"><?= $readable ?></label>
-                        </div>
-                    <?php } ?>
+                <div class="select-dropdown">
+                    <select required name="kid">
+                        <option value="" selected disabled>Duid aan</option>
+                        <?php foreach ($kids as $number => $name) {
+                        if (!hasAvailabilitiesSaved($number, $availabilities)) {    
+                        ?>
+                        <option value="<?= $number ?>"><?= $name ?></option>
+                        <?php }} ?>
+                    </select>
                 </div>
+
+                <p>Als je niet kunt of wilt komen naar het oudercontact, klik je op deze knop:</p>
+
+                <input type="checkbox" name="not-coming" value="1" id="not-coming">
+                <div class="moment-selection coming">
+                    <div class="checkbox-container">
+                        <label for="not-coming" class="moment">Ik zal niet aanwezig zijn op het oudercontact</label>
+                    </div>
+                </div>
+
+                <div class="availabilities">
+                    <p>Ik kan op al deze momenten <b>(duid zoveel mogelijk opties aan)</b>:</p>
+
+                    <div class="moment-selection">
+                        <?php foreach ($moments as $code => $readable) { ?>
+                            <div class="checkbox-container">
+                                <input type="checkbox" name="availabilities[]" value="<?= $code ?>" id="<?= $code ?>">
+                                <label for="<?= $code ?>" class="moment"><?= $readable ?></label>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <p>Wil je nog iets extra melden of vragen? Laat het hier onder weten aan de juf.</p>
+                <textarea name="note" id="note" placeholder="Typ hier je vraag of opmerking ..." rows="4"></textarea>
 
                 <div class="button-container" id="fakesave"><button type="submit" onclick="confirmSave(event)">Opslaan</button></div>
                 
