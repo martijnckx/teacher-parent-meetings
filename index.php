@@ -78,6 +78,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             align-items: center;
         }
         .extra-shadow {
+            margin-top: 20px;
             border-radius: 15px;
             box-shadow: 0px 3px 40px rgba(0, 0, 0, 0.05);
         }
@@ -275,7 +276,16 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             border: 2px solid var(--main-color);
         }
 
+        @media screen and (max-height: 1005px) {
+            .container {
+                align-items: flex-start;
+            }
+        }
+
         @media screen and (max-width: 699px) {
+            .extra-shadow {
+                margin-top: 0;
+            }
             .container {
                 justify-content: flex-start;
                 align-items: flex-start;
@@ -320,11 +330,11 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
             <form class="content" action="?" method="post">
                 <h1>Online Oudercontact</h1>
                 <?php if ($justsaved) { ?>
-                <p class="thanks"><b>Bedankt!</b> Je beschikbaarheden zijn opgeslagen. De juf gaat nu een planning maken, en laat zo snel mogelijk per <b>e-mail</b> weten wanneer jij aan de beurt bent. Je ontvangt tegelijk de link naar de online omgeving waarin het gesprek plaatsvindt.</p>
+                <p class="thanks"><b>Bedankt!</b> Je beschikbaarheden zijn opgeslagen. De juf gaat nu een planning maken, en laat zo snel mogelijk per <b>e-mail</b> weten wanneer jij aan de beurt bent. Je ontvangt dan ook de link waarmee je kan deelnemen aan het gesprek.</p>
                 <?php } else { ?>
                 <p>Duid hier graag <b>alle momenten</b> aan waarop je aanwezig zou kunnen zijn op het oudercontact.
                 De juf zal op basis van alle antwoorden een planning opstellen,
-                en je per mail laten weten op welk specifiek moment je aan de beurt bent. Je ontvangt tegelijk de link naar de online omgeving waarin het gesprek plaatsvindt.</p>
+                en je per mail laten weten op welk specifiek moment je aan de beurt bent. Je ontvangt dan ook de link waarmee je kan deelnemen aan het gesprek.</p>
 
                 <p style="width: 100%;">Ik ben een ouder of voogd van:</p>
                 <div class="select-dropdown">
@@ -338,12 +348,12 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
                     </select>
                 </div>
 
-                <p>Als je niet kunt of wilt komen naar het oudercontact, klik je op deze knop:</p>
+                <p>Als je op dit moment niet echt nood hebt aan een oudercontact, klik dan op deze knop:</p>
 
                 <input type="checkbox" name="not-coming" value="1" id="not-coming">
                 <div class="moment-selection coming">
                     <div class="checkbox-container">
-                        <label for="not-coming" class="moment">Ik zal niet aanwezig zijn op het oudercontact</label>
+                        <label for="not-coming" class="moment">Geen oudercontact</label>
                     </div>
                 </div>
 
