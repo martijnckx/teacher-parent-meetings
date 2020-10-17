@@ -341,7 +341,7 @@ if (!empty($_POST['kid']) && isset($kids[$_POST['kid']])) {
                     <select required name="kid">
                         <option value="" selected disabled>Duid aan</option>
                         <?php foreach ($kids as $number => $name) {
-                        if (!hasAvailabilitiesSaved($number, $availabilities)) {    
+                        if (!hasAvailabilitiesSaved(strval($number), $availabilities)) {    
                         ?>
                         <option value="<?= $number ?>"><?= $name ?></option>
                         <?php }} ?>
